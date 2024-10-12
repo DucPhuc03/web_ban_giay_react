@@ -1,13 +1,19 @@
-import Header from "./components/Header";
 import { Routes, Route } from "react-router-dom";
+import Order from "./pages/Order";
+import Home from "./pages/Home";
+import Shop from "./pages/Shop";
 import Cart from "./pages/Cart";
+import Product from "./pages/Product";
 function App() {
   return (
     <div className="App">
       <Routes>
-        <Route path="/" element={<Header></Header>} />
-        <Route path="/cua-hang" element={<Cart></Cart>} />
-        <Route path="lien-he"></Route>
+        <Route path="/" element={<Home></Home>} />
+        <Route path="/cua-hang" element={<Shop></Shop>} />
+        <Route path="/lien-he"></Route>
+        <Route path="/dat-hang" element={<Order></Order>}></Route>
+        <Route path="/gio-hang" element={<Cart></Cart>}></Route>
+        <Route path="/product/:id" element={<Product></Product>}></Route>
       </Routes>
     </div>
   );

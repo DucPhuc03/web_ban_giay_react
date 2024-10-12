@@ -40,9 +40,25 @@ function Header() {
             </form>
           </li>
           <li>
-            <button className="rounded">
-              <i class="fa-solid fa-cart-shopping"></i>
-            </button>
+            <Link className="" to={"/gio-hang"}>
+              <button className="rounded" style={{ position: "relative" }}>
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span
+                  style={{
+                    position: "absolute",
+                    top: "-15px",
+                    right: "-10px",
+                    backgroundColor: "blue",
+                    color: "white",
+                    borderRadius: "60%",
+                    padding: "2px 6px",
+                    fontSize: "12px",
+                  }}
+                >
+                  31
+                </span>
+              </button>
+            </Link>
           </li>
           <li className="nav-item ms-5">
             <button className="rounded">

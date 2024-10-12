@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "../components/Header";
 
-const Cart = () => {
+const Home = () => {
   return (
     <div>
       <Header></Header>
@@ -9,4 +9,4 @@ const Cart = () => {
   );
 };
 
-export default Cart;
+export default Home;
