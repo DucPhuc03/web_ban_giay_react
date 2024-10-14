@@ -12,7 +12,7 @@ const Product = () => {
     price: 139.0,
     url: "https://s.alicdn.com/@sc04/kf/Hedd90641e94a4ca4b5cf38f73886866eo.jpg_720x720q50.jpg",
   };
-  const [quantity, setQuantity] = useState(2);
+  const [quantity, setQuantity] = useState(1);
   const up = () => {
     setQuantity(quantity + 1);
   };
@@ -102,11 +102,11 @@ const Product = () => {
                 <span>Size</span>
               </div>
               <div className="div row ms-5">
-                <button className="btn btn-secondary col-2 me-2">24</button>
-                <button className="btn btn-secondary col-2 me-2">24</button>
-                <button className="btn btn-secondary col-2 me-2">24</button>
-                <button className="btn btn-secondary col-2 me-2">24</button>
-                <button className="btn btn-secondary col-2 me-2">24</button>
+                <button className="btn btn-secondary col-2 me-2">27</button>
+                <button className="btn btn-secondary col-2 me-2">28</button>
+                <button className="btn btn-secondary col-2 me-2">29</button>
+                <button className="btn btn-secondary col-2 me-2">30</button>
+                <button className="btn btn-secondary col-2 me-2">31</button>
               </div>
             </div>
             <div className="quantity d-flex mt-5">

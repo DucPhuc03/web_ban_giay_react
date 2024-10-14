@@ -61,6 +61,9 @@ function Header() {
             </Link>
           </li>
           <li className="nav-item ms-5">
+            <span>Hi,Phuc </span>
+          </li>
+          <li className="nav-item ms-3">
             <button className="rounded">
               <i className="fa-solid fa-user"></i>
             </button>

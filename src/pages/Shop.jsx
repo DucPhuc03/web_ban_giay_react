@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
 import { Link } from "react-router-dom";
+import axios from "axios";
 const product = [
   {
     id: 1,
@@ -41,6 +42,17 @@ const product = [
   },
 ];
 const Shop = () => {
+  const [totalPage, setTotalPage] = useState(0);
+  const [page, setPage] = useState(1);
+  const [products, setProducts] = useState([]);
+  useEffect(() => {
+    axios
+      .get("http://localhost:8080/product/get?filter=name~'a'&page=1&size=2")
+      .then((response) => {
+        setTotalPage(response.data.data.meta.total);
+        setProducts(response.data.data.result);
+      });
+  }, []);
   return (
     <div>
       <Header></Header>
@@ -48,49 +60,83 @@ const Shop = () => {
         <div className="row mt-3">
           <div className="filter col-3 bg-dark">gdgdg</div>
           <div className="product row col-8 bg-light ms-5">
-            {product.map((item) => (
-              <div key={item.id} className="col-3">
-                <Link
-                  to={`/product/${item.id}`}
-                  style={{ textDecoration: "none", color: "inherit" }}
-                >
-                  <div className="image mt-3">
-                    <img
-                      src={item.url}
-                      alt={item.name}
-                      style={{
-                        width: "200px",
-                        height: "214px",
-                        objectFit: "cover",
-                        boxSizing: "border-box",
-                        border: "10px solid white",
-                      }}
-                    />
+            <div className="div row">
+              {product.map((item) => (
+                <div key={item.id} className="col-3">
+                  <Link
+                    to={`/product/${item.id}`}
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    <div className="image mt-3">
+                      <img
+                        src={item.url}
+                        alt={item.name}
+                        style={{
+                          width: "200px",
+                          height: "214px",
+                          objectFit: "cover",
+                          boxSizing: "border-box",
+                          border: "10px solid white",
+                        }}
+                      />
+                    </div>
+                    <div className="title pt-4">
+                      <p style={{ fontWeight: "bold", fontSize: "18px" }}>
+                        {item.name}
+                      </p>
+                      <span
+                        style={{
+                          fontWeight: "bold",
+                          fontFamily: "Arial, sans-serif",
+                          fontSize: "25px",
+                          fontStyle: "italic",
+                          color: "#FF5722",
+                        }}
+                      >
+                        {item.price} đ
+                      </span>
+                    </div>
+                  </Link>
+                  <div className="div">
+                    <button type="button" className="btn btn-danger">
+                      Mua ngay
+                    </button>
                   </div>
-                  <div className="title pt-4">
-                    <p style={{ fontWeight: "bold", fontSize: "18px" }}>
-                      {item.name}
-                    </p>
-                    <span
+                </div>
+              ))}
+            </div>
+            <div
+              className="page bg-light mt-5 "
+              style={{ width: "200px", height: "40px", marginLeft: "300px" }}
+            >
+              <ul className="nav justify-content-center align-items-center">
+                <li>
+                  <i class="fa-solid fa-chevron-left"></i>
+                </li>
+                <li>
+                  {Array.from({ length: totalPage }, (_, i) => (
+                    <button
+                      key={i + 1}
+                      className="page-button "
                       style={{
-                        fontWeight: "bold",
-                        fontFamily: "Arial, sans-serif",
-                        fontSize: "25px",
-                        fontStyle: "italic",
-                        color: "#FF5722",
+                        border: "none",
+                        paddingRight: "5px",
+                        paddingLeft: "30px",
+                        background: "none",
                       }}
                     >
-                      {item.price} đ
-                    </span>
-                  </div>
-                </Link>
-                <div className="div">
-                  <button type="button" className="btn btn-danger">
-                    Mua ngay
-                  </button>
-                </div>
-              </div>
-            ))}
+                      {i + 1}
+                    </button>
+                  ))}
+                </li>
+                <li>
+                  <i
+                    class="fa-solid fa-chevron-right"
+                    style={{ paddingLeft: "20px" }}
+                  ></i>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
