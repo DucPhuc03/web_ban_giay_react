@@ -74,7 +74,7 @@ const Product = () => {
                   color: "#FF5722",
                 }}
               >
-                {product.price} đ
+                {product.price * quantity} đ
               </span>
             </div>
             <div className="deliver d-flex">

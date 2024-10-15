@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import Footer from "../components/Footer";
 const product = [
   {
     id: 1,
@@ -47,18 +48,104 @@ const Shop = () => {
   const [products, setProducts] = useState([]);
   useEffect(() => {
     axios
-      .get("http://localhost:8080/product/get?filter=name~'a'&page=1&size=2")
+      .get(
+        `http://localhost:8080/product/get?filter=name~'a'&page=${page}&size=2`
+      )
       .then((response) => {
         setTotalPage(response.data.data.meta.total);
         setProducts(response.data.data.result);
       });
   }, []);
+
+  const onChangePage = (page) => {
+    setPage(page);
+  };
+  console.log(page);
+  console.log(products);
   return (
     <div>
       <Header></Header>
       <div className="container mt-5">
         <div className="row mt-3">
-          <div className="filter col-3 bg-dark">gdgdg</div>
+          <div className="filter col-2 bg-light">
+            <div className="title mt-3">
+              <i className="fa-solid fa-filter pe-2"></i>
+              <span style={{ fontWeight: "bold" }}>BỘ LỌC TÌM KIẾM</span>
+            </div>
+            <div className="filter">
+              <div className="category">
+                <div className="header mt-4">
+                  <span>Theo danh mục</span>
+                </div>
+                <div className="form-check mt-3">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    defaultValue=""
+                    id="flexCheckDefault"
+                  />
+                  <label className="label ps-5" htmlFor="flexCheckDefault">
+                    Thể thao
+                  </label>
+                </div>
+                <div className="form-check mt-3">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    defaultValue=""
+                    id="flexCheckDefault"
+                  />
+                  <label className="label ps-5" htmlFor="flexCheckDefault">
+                    Thể thao
+                  </label>
+                </div>
+                <div className="form-check mt-3">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    defaultValue=""
+                    id="flexCheckDefault"
+                  />
+                  <label className="label ps-5" htmlFor="flexCheckDefault">
+                    Thể thao
+                  </label>
+                </div>
+              </div>
+              <div className="branch pt-4">
+                <div className="header mt-4">
+                  <span>Theo thương hiệu</span>
+                </div>
+                <div className="form-check mt-3">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    defaultValue=""
+                    id="flexCheckDefault"
+                  />
+                  <label className="label ps-5" htmlFor="flexCheckDefault">
+                    Thể thao
+                  </label>
+                </div>
+              </div>
+              <div className="price pt-4">
+                <div className="header mt-4">
+                  <span>Theo giá</span>
+                </div>
+                <div className="form-check mt-3">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    defaultValue=""
+                    id="flexCheckDefault"
+                  />
+                  <label className="label ps-5" htmlFor="flexCheckDefault">
+                    Thể thao
+                  </label>
+                </div>
+              </div>
+              <div className="div"></div>
+            </div>
+          </div>
           <div className="product row col-8 bg-light ms-5">
             <div className="div row">
               {product.map((item) => (
@@ -124,6 +211,7 @@ const Shop = () => {
                         paddingLeft: "30px",
                         background: "none",
                       }}
+                      onClick={() => onChangePage(i + 1)}
                     >
                       {i + 1}
                     </button>
@@ -140,6 +228,7 @@ const Shop = () => {
           </div>
         </div>
       </div>
+      <Footer></Footer>
     </div>
   );
 };

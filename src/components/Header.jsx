@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import logo from "../assets/logo.png";
 function Header() {
   return (
     <div>
@@ -22,9 +23,13 @@ function Header() {
             </Link>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="#">
-              logo
-            </a>
+            <Link className="nav-link" to="/">
+              <img
+                src={logo}
+                alt=""
+                style={{ width: "100px", height: "50px" }}
+              />
+            </Link>
           </li>
           <li className="nav-item  justify-content-center align-items-center col-2 ms-4 m-3">
             <form className="form-inline my-2 my-lg-0 d-flex">
