@@ -2,34 +2,27 @@ import React, { useState } from "react";
 import logo from "../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-const Login = () => {
+const Register = () => {
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const navigate = useNavigate();
-  // const handleNavigate = () => {
 
-  //   navigate("/");
-  // };
-  console.log(username);
-  console.log(password);
-
-  const handleLogin = async (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     const user = {
       username: username,
       password: password,
+      email: email,
     };
     try {
       const response = await axios.post(
-        "http://localhost:8080/auth/login",
-        user,
-        {
-          withCredentials: true,
-        }
+        "http://localhost:8080/user/create",
+        user
       );
-
       if (response.status === 200) {
-        navigate("/");
+        window.alert("thanh cong");
+        navigate("/dang-nhap");
       } else {
         window.alert("that bai");
       }
@@ -49,10 +42,10 @@ const Login = () => {
               className="div justify-content-center  align-items-center d-flex"
               style={{ fontWeight: "bold", fontSize: "24px" }}
             >
-              <span>Đăng nhập</span>
+              <span>Đăng kí</span>
             </div>
             <div className="div mt-4">
-              <form onSubmit={handleLogin}>
+              <form onSubmit={handleRegister}>
                 <div className="div d-flex justify-content-center  align-items-center mb-3">
                   <label
                     htmlFor="username"
@@ -81,17 +74,31 @@ const Login = () => {
                     onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
+                <div className="div d-flex justify-content-center  align-items-center mb-3">
+                  <label
+                    htmlFor="email"
+                    className="form-label"
+                    style={{ width: "100px" }}
+                  >
+                    Email
+                  </label>
+                  <input
+                    className="form-control"
+                    type="password"
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </div>
                 <div className="div">
-                  <button type="submit" className="btn btn-primary w-100 mb-3">
-                    Đăng nhập
+                  <button className="btn btn-primary w-100 mb-3">
+                    Đăng kí
                   </button>
                 </div>
                 <div className="div d-flex">
                   <div className="div">
-                    <span>Chưa có tài khoản</span>
+                    <span>Đã có tài khoản</span>
                   </div>
                   <div className="div ps-5">
-                    <Link to={"/dang-ki"}>Đăng kí</Link>
+                    <Link to={"/dang-nhap"}>Đăng nhập</Link>
                   </div>
                 </div>
               </form>
@@ -103,4 +110,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;

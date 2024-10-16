@@ -1,7 +1,20 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 import logo from "../assets/logo.png";
 function Header() {
+  const [isLogin, setIsLogin] = useState(false);
+  const navigate = useNavigate();
+  useEffect(() => {
+    const token = Cookies.get("access_token");
+    setIsLogin(!!token);
+  }, []);
+  const handleLogout = () => {
+    Cookies.remove("access_token");
+    setIsLogin(false);
+    navigate("/dang-nhap");
+  };
+
   return (
     <div>
       <div>
@@ -68,10 +81,48 @@ function Header() {
           <li className="nav-item ms-5">
             <span>Hi,Phuc </span>
           </li>
-          <li className="nav-item ms-3">
-            <button className="rounded">
+          <li className="nav-item dropdown ms-4">
+            <button
+              className="rounded"
+              id="navbarDropdownMenuLink"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+              style={{ border: "none", background: "none" }}
+            >
               <i className="fa-solid fa-user"></i>
             </button>
+            <ul
+              className="dropdown-menu"
+              aria-labelledby="navbarDropdownMenuLink"
+            >
+              <li>
+                <Link className="dropdown-item" to="/tai-khoan">
+                  Tài khoản
+                </Link>
+              </li>
+              <li>
+                <Link className="dropdown-item" to="/lich-su">
+                  Lịch sử mua hàng
+                </Link>
+              </li>
+              {isLogin ? (
+                <li>
+                  <button
+                    className="dropdown-item"
+                    onClick={() => handleLogout()}
+                  >
+                    Đăng xuất
+                  </button>
+                </li>
+              ) : (
+                <li>
+                  <Link className="dropdown-item" to="dang-nhap">
+                    Đăng nhập
+                  </Link>
+                </li>
+              )}
+            </ul>
           </li>
         </ul>
       </div>
