@@ -117,7 +117,7 @@ function Header() {
                 </li>
               ) : (
                 <li>
-                  <Link className="dropdown-item" to="dang-nhap">
+                  <Link className="dropdown-item" to="/dang-nhap">
                     Đăng nhập
                   </Link>
                 </li>

@@ -42,6 +42,7 @@ const product = [
     url: "https://s.alicdn.com/@sc04/kf/Hb01ac410c1fb4a6aaf9bc6bc1f7e8dbdi.png_720x720q50.jpg",
   },
 ];
+const category = ["Chạy bộ", "Thể thao", "Thời trang"];
 const Shop = () => {
   const [totalPage, setTotalPage] = useState(0);
   const [page, setPage] = useState(1);
@@ -52,15 +53,15 @@ const Shop = () => {
         `http://localhost:8080/product/get?filter=name~'a'&page=${page}&size=2`
       )
       .then((response) => {
-        setTotalPage(response.data.data.meta.total);
+        setTotalPage(response.data.data.meta.pages);
         setProducts(response.data.data.result);
       });
-  }, []);
+  }, [page]);
 
   const onChangePage = (page) => {
     setPage(page);
   };
-  console.log(page);
+  console.log(totalPage);
   console.log(products);
   return (
     <div>
@@ -77,39 +78,19 @@ const Shop = () => {
                 <div className="header mt-4">
                   <span>Theo danh mục</span>
                 </div>
-                <div className="form-check mt-3">
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    defaultValue=""
-                    id="flexCheckDefault"
-                  />
-                  <label className="label ps-5" htmlFor="flexCheckDefault">
-                    Thể thao
-                  </label>
-                </div>
-                <div className="form-check mt-3">
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    defaultValue=""
-                    id="flexCheckDefault"
-                  />
-                  <label className="label ps-5" htmlFor="flexCheckDefault">
-                    Thể thao
-                  </label>
-                </div>
-                <div className="form-check mt-3">
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    defaultValue=""
-                    id="flexCheckDefault"
-                  />
-                  <label className="label ps-5" htmlFor="flexCheckDefault">
-                    Thể thao
-                  </label>
-                </div>
+                {category.map((item) => (
+                  <div className="form-check mt-3">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      defaultValue=""
+                      id={item}
+                    />
+                    <label className="label ps-5" htmlFor={item}>
+                      {item}
+                    </label>
+                  </div>
+                ))}
               </div>
               <div className="branch pt-4">
                 <div className="header mt-4">
