@@ -2,9 +2,26 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import logo from "../assets/logo.png";
+import axios from "../config/config-axios";
 function Header() {
   const [isLogin, setIsLogin] = useState(false);
+  const [number, setNumber] = useState();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/cart/get/number/2"
+        );
+        setNumber(response.data.data);
+      } catch (error) {
+        console.error("Error fetching cart number:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
   useEffect(() => {
     const token = Cookies.get("access_token");
     setIsLogin(!!token);
@@ -69,11 +86,13 @@ function Header() {
                     backgroundColor: "blue",
                     color: "white",
                     borderRadius: "60%",
-                    padding: "2px 6px",
-                    fontSize: "12px",
+                    padding: "-1px 6px",
+                    fontSize: "14px",
+                    width: "20px",
+                    height: "20px",
                   }}
                 >
-                  31
+                  {number}
                 </span>
               </button>
             </Link>
