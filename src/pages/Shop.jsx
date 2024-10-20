@@ -61,8 +61,6 @@ const Shop = () => {
   const onChangePage = (page) => {
     setPage(page);
   };
-  console.log(totalPage);
-  console.log(products);
   return (
     <div>
       <Header></Header>

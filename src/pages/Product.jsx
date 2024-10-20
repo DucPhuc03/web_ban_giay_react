@@ -1,16 +1,19 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Header from "../components/Header";
 
 const Product = () => {
-  const params = useParams();
-
   const product = {
     id: 1,
     name: "nike",
     price: 139.0,
     url: "https://s.alicdn.com/@sc04/kf/Hedd90641e94a4ca4b5cf38f73886866eo.jpg_720x720q50.jpg",
+  };
+  const params = useParams();
+  const [size, setSize] = useState(27);
+  const changeSize = (size) => {
+    setSize(size);
   };
   const [quantity, setQuantity] = useState(1);
   const up = () => {
@@ -19,7 +22,7 @@ const Product = () => {
   const down = () => {
     setQuantity(quantity - 1);
   };
-
+  console.log(size);
   return (
     <div>
       <Header></Header>
@@ -102,11 +105,36 @@ const Product = () => {
                 <span>Size</span>
               </div>
               <div className="div row ms-5">
-                <button className="btn btn-secondary col-2 me-2">27</button>
-                <button className="btn btn-secondary col-2 me-2">28</button>
-                <button className="btn btn-secondary col-2 me-2">29</button>
-                <button className="btn btn-secondary col-2 me-2">30</button>
-                <button className="btn btn-secondary col-2 me-2">31</button>
+                <button
+                  className="btn btn-secondary col-2 me-2"
+                  onClick={() => changeSize(27)}
+                >
+                  27
+                </button>
+                <button
+                  className="btn btn-secondary col-2 me-2"
+                  onClick={() => changeSize(28)}
+                >
+                  28
+                </button>
+                <button
+                  className="btn btn-secondary col-2 me-2"
+                  onClick={() => changeSize(29)}
+                >
+                  29
+                </button>
+                <button
+                  className="btn btn-secondary col-2 me-2"
+                  onClick={() => changeSize(30)}
+                >
+                  30
+                </button>
+                <button
+                  className="btn btn-secondary col-2 me-2"
+                  onClick={() => changeSize(31)}
+                >
+                  31
+                </button>
               </div>
             </div>
             <div className="quantity d-flex mt-5">
@@ -149,14 +177,18 @@ const Product = () => {
             <div className="buy d-flex mt-3">
               <div className="div ">
                 <div className="div">
-                  <button className="btn btn-danger ">
-                    <i class="fa-solid fa-cart-arrow-down me-1"></i>
-                    Thêm vào giỏ hàng
-                  </button>
+                  <Link className="" to="/dat-hang">
+                    <button className="btn btn-danger ">
+                      <i class="fa-solid fa-cart-arrow-down me-1"></i>
+                      Thêm vào giỏ hàng
+                    </button>
+                  </Link>
                 </div>
               </div>
               <div className="div ms-3">
-                <button className="btn btn-danger ">Mua ngay</button>
+                <Link to={"/dat-hang"}>
+                  <button className="btn btn-danger ">Mua ngay</button>
+                </Link>
               </div>
             </div>
             <div className="prodcut mt-5 bg-light ">

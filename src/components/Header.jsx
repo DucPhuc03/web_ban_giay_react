@@ -1,25 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import logo from "../assets/logo.png";
 import axios from "../config/config-axios";
+import { UserContext } from "../utils/ContextUser";
 function Header() {
   const [isLogin, setIsLogin] = useState(false);
-  const [number, setNumber] = useState();
+  const [number, setNumber] = useState(0);
+  const { user } = useContext(UserContext);
   const navigate = useNavigate();
-
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/cart/get/number/2"
+          `http://localhost:8080/cart/get/number/2`
         );
         setNumber(response.data.data);
       } catch (error) {
         console.error("Error fetching cart number:", error);
       }
     };
-
     fetchData();
   }, []);
   useEffect(() => {
@@ -31,7 +31,6 @@ function Header() {
     setIsLogin(false);
     navigate("/dang-nhap");
   };
-
   return (
     <div>
       <div>
@@ -97,8 +96,8 @@ function Header() {
               </button>
             </Link>
           </li>
-          <li className="nav-item ms-5">
-            <span>Hi,Phuc </span>
+          <li className="nav-item ms-5" style={{ fontSize: "20px" }}>
+            <span>{user.name} </span>
           </li>
           <li className="nav-item dropdown ms-4">
             <button

@@ -6,19 +6,22 @@ import Cart from "./pages/Cart";
 import Product from "./pages/Product";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import { UserProvider } from "./utils/ContextUser";
 function App() {
   return (
     <div className="App">
-      <Routes>
-        <Route path="/" element={<Home></Home>} />
-        <Route path="/dang-nhap" element={<Login></Login>} />
-        <Route path="/dang-ki" element={<Register></Register>} />
-        <Route path="/cua-hang" element={<Shop></Shop>} />
-        <Route path="/lien-he"></Route>
-        <Route path="/dat-hang" element={<Order></Order>}></Route>
-        <Route path="/gio-hang" element={<Cart></Cart>}></Route>
-        <Route path="/product/:id" element={<Product></Product>}></Route>
-      </Routes>
+      <UserProvider>
+        <Routes>
+          <Route path="/" element={<Home></Home>} />
+          <Route path="/dang-nhap" element={<Login></Login>} />
+          <Route path="/dang-ki" element={<Register></Register>} />
+          <Route path="/cua-hang" element={<Shop></Shop>} />
+          <Route path="/lien-he"></Route>
+          <Route path="/dat-hang" element={<Order></Order>}></Route>
+          <Route path="/gio-hang" element={<Cart></Cart>}></Route>
+          <Route path="/product/:id" element={<Product></Product>}></Route>
+        </Routes>
+      </UserProvider>
     </div>
   );
 }
