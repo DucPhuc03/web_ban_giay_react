@@ -8,13 +8,13 @@ const product = [
     id: 1,
     name: "nike",
     price: 139.0,
-    url: "https://s.alicdn.com/@sc04/kf/Hedd90641e94a4ca4b5cf38f73886866eo.jpg_720x720q50.jpg",
+    url: "https://i.imgur.com/ppt0CRA.jpeg",
   },
   {
     id: 2,
     name: "adudas",
     price: 1333,
-    url: "https://s.alicdn.com/@sc04/kf/Hba8a779d2aee49cd86160d87f43a5ad0Y.jpg_720x720q50.jpg",
+    url: "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTnY9al3paTHc8wY83_2BKgMwKWoWAaoQmVd82DhlQd-4JeOMfzdnCu0p81KeZcAR7rk6wTKagpee_HuhnQQlA3vZSxil4G3fHG0GPhAt47N7_T4WFZuIOJwXiebNx4uEuqD_W-9TN-a8E&usqp=CAc",
   },
 
   {
@@ -125,7 +125,7 @@ const Shop = () => {
               <div className="div"></div>
             </div>
           </div>
-          <div className="product row col-8 bg-light ms-5">
+          <div className="product row col-9 bg-light ms-5">
             <div className="div row">
               {product.map((item) => (
                 <div key={item.id} className="col-3">
@@ -138,7 +138,7 @@ const Shop = () => {
                         src={item.url}
                         alt={item.name}
                         style={{
-                          width: "200px",
+                          width: "250px",
                           height: "214px",
                           objectFit: "cover",
                           boxSizing: "border-box",

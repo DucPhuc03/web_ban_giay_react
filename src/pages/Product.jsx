@@ -2,16 +2,32 @@ import React from "react";
 import { useParams, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Header from "../components/Header";
-
+import axios from "../config/config-axios";
 const Product = () => {
-  const product = {
-    id: 1,
-    name: "nike",
-    price: 139.0,
-    url: "https://s.alicdn.com/@sc04/kf/Hedd90641e94a4ca4b5cf38f73886866eo.jpg_720x720q50.jpg",
-  };
+  // const product = {
+  //   id: 1,
+  //   name: "nike",
+  //   price: 139.0,
+  //   url: "https://s.alicdn.com/@sc04/kf/Hedd90641e94a4ca4b5cf38f73886866eo.jpg_720x720q50.jpg",
+  // };
   const params = useParams();
   const [size, setSize] = useState(27);
+  const [product, setProduct] = useState({});
+  useEffect(() => {
+    const fetchProduct = async () => {
+      if (params) {
+        try {
+          const response = await axios.get(
+            `http://localhost:8080/product/get/3`
+          );
+          setProduct(response.data.data || []);
+        } catch (error) {
+          console.error("Error fetching cart:", error);
+        }
+      }
+    };
+    fetchProduct();
+  }, []);
   const changeSize = (size) => {
     setSize(size);
   };
@@ -22,7 +38,6 @@ const Product = () => {
   const down = () => {
     setQuantity(quantity - 1);
   };
-  console.log(size);
   return (
     <div>
       <Header></Header>
@@ -31,11 +46,12 @@ const Product = () => {
           <div className="image col-4">
             <div className="div">
               <img
-                src={product.url}
+                // src={product.image_url}
+                src="https://i.imgur.com/2CrH2oo.jpeg"
                 alt=""
                 style={{
-                  width: "500px",
-                  height: "500px",
+                  width: "450px",
+                  height: "450px",
                   objectfit: "cover",
                   boxsizing: "border-box",
                   border: "10px solid white ",
@@ -199,15 +215,7 @@ const Product = () => {
                 <h4>Mô tả sản phẩm</h4>
               </div>
               <div className="div">
-                <p>
-                  Hàng bên mình là Backdoor mới 100%, hàng không có hidden tag,
-                  box thay thế ✔Vì là hàng Backdoor không có phụ kiện đi kèm như
-                  tag giấy box hãng shop thay thế bằng box thay thế nên chúng ta
-                  sẽ có giá cực kì tốt mà không ảnh hưởng tới chất lượng đôi
-                  giày. ✔ Với uy tín thương hiệu mà Hải Nam_Authentic liên tục
-                  tích lũy và xây dựng qua 6 năm, SHOP cam kết, các sản phẩm của
-                  shop đều là hàng chính hãng 100%
-                </p>
+                <p>{product.description}</p>
               </div>
             </div>
           </div>

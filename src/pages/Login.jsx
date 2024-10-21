@@ -6,12 +6,6 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const navigate = useNavigate();
-  // const handleNavigate = () => {
-
-  //   navigate("/");
-  // };
-  console.log(username);
-  console.log(password);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -30,6 +24,7 @@ const Login = () => {
 
       if (response.status === 200) {
         navigate("/");
+        localStorage.setItem("user", JSON.stringify(response.data.data));
       } else {
         window.alert("that bai");
       }
