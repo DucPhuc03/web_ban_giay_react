@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Header from "../components/Header";
 import axios from "../config/config-axios";
@@ -11,8 +11,14 @@ const Product = () => {
   //   url: "https://s.alicdn.com/@sc04/kf/Hedd90641e94a4ca4b5cf38f73886866eo.jpg_720x720q50.jpg",
   // };
   const params = useParams();
+  const productId = Number(params.id);
+  const navigate = useNavigate();
   const [size, setSize] = useState(27);
   const [product, setProduct] = useState({});
+  const userId = localStorage.getItem("user")
+    ? JSON.parse(localStorage.getItem("user")).id
+    : null;
+  console.log(productId);
   useEffect(() => {
     const fetchProduct = async () => {
       if (params) {
@@ -37,6 +43,37 @@ const Product = () => {
   };
   const down = () => {
     setQuantity(quantity - 1);
+  };
+
+  const addToCart = async () => {
+    const productCurrent = {
+      size: size,
+      quantity: quantity,
+      product: { id: productId },
+      user: { id: userId },
+    };
+    console.log(productCurrent);
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/cart/create",
+        productCurrent
+      );
+      window.alert("thêm thành công");
+      window.location.reload();
+    } catch (error) {
+      console.error("Error posting cart:", error);
+    }
+  };
+  const handleCheckout = () => {
+    navigate("/dat-hang", {
+      state: {
+        productOrder: {
+          product,
+          size,
+          quantity,
+        },
+      },
+    });
   };
   return (
     <div>
@@ -193,18 +230,22 @@ const Product = () => {
             <div className="buy d-flex mt-3">
               <div className="div ">
                 <div className="div">
-                  <Link className="" to="/dat-hang">
-                    <button className="btn btn-danger ">
-                      <i class="fa-solid fa-cart-arrow-down me-1"></i>
-                      Thêm vào giỏ hàng
-                    </button>
-                  </Link>
+                  <button
+                    className="btn btn-danger "
+                    onClick={() => addToCart()}
+                  >
+                    <i class="fa-solid fa-cart-arrow-down me-1"></i>
+                    Thêm vào giỏ hàng
+                  </button>
                 </div>
               </div>
               <div className="div ms-3">
-                <Link to={"/dat-hang"}>
-                  <button className="btn btn-danger ">Mua ngay</button>
-                </Link>
+                <button
+                  className="btn btn-danger "
+                  onClick={() => handleCheckout()}
+                >
+                  Mua ngay
+                </button>
               </div>
             </div>
             <div className="prodcut mt-5 bg-light ">

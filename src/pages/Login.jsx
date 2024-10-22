@@ -23,8 +23,9 @@ const Login = () => {
       );
 
       if (response.status === 200) {
-        navigate("/");
         localStorage.setItem("user", JSON.stringify(response.data.data));
+        navigate("/");
+        window.location.reload();
       } else {
         window.alert("that bai");
       }

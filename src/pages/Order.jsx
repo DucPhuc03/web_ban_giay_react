@@ -5,6 +5,7 @@ import Header from "../components/Header";
 const Order = () => {
   const location = useLocation();
   const selectedProducts = location.state?.selectedProducts || [];
+  const productOrder = location.state?.productOrder || [];
   return (
     <div>
       <Header></Header>
@@ -35,7 +36,32 @@ const Order = () => {
           <div className="div col-1">Số lượng</div>
           <div className="div col-2 ms-5">Thành tiền</div>
         </div>
-        {selectedProducts.map((item) => (
+        {selectedProducts && selectedProducts.length > 0 ? (
+          selectedProducts.map((item) => (
+            <div className="row d-flex align-items-center bg-light ">
+              <div className="div col-6 d-flex align-items-center ">
+                <div className="div mt-4">
+                  <img
+                    src="https://s.alicdn.com/@sc04/kf/Hedd90641e94a4ca4b5cf38f73886866eo.jpg_720x720q50.jpg"
+                    alt=""
+                    style={{ width: "80px", height: "80px" }}
+                  />
+                </div>
+                <div className="div ms-3" style={{ paddingLeft: "50px" }}>
+                  <p>{item.product.name}</p>
+                </div>
+                <div className="div ms-5" style={{ paddingLeft: "50px" }}>
+                  <span> Size: {item.size}</span>
+                </div>
+              </div>
+              <div className="div col-2">{item.product.price}</div>
+              <div className="div col-1">{item.quantity}</div>
+              <div className="div col-2 ms-5">
+                {item.quantity * item.product.price}
+              </div>
+            </div>
+          ))
+        ) : (
           <div className="row d-flex align-items-center bg-light ">
             <div className="div col-6 d-flex align-items-center ">
               <div className="div mt-4">
@@ -46,19 +72,20 @@ const Order = () => {
                 />
               </div>
               <div className="div ms-3" style={{ paddingLeft: "50px" }}>
-                <p>{item.product.name}</p>
+                <p>{productOrder.product.name}</p>
               </div>
               <div className="div ms-5" style={{ paddingLeft: "50px" }}>
-                <span> Size: {item.size}</span>
+                <span> Size: {productOrder.size}</span>
               </div>
             </div>
-            <div className="div col-2">{item.product.price}</div>
-            <div className="div col-1">{item.quantity}</div>
+            <div className="div col-2">{productOrder.product.price}</div>
+            <div className="div col-1">{productOrder.quantity}</div>
             <div className="div col-2 ms-5">
-              {item.quantity * item.product.price}
+              {productOrder.quantity * productOrder.product.price}
             </div>
           </div>
-        ))}
+        )}
+        <div className="div ms-3">thanh toan</div>
       </div>
     </div>
   );
