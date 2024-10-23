@@ -1,11 +1,93 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Header from "../components/Header";
-
+import axios from "../config/config-axios";
 const Order = () => {
+  const userId = localStorage.getItem("user")
+    ? JSON.parse(localStorage.getItem("user")).id
+    : null;
+  const [orderId, setOrderId] = useState();
+  const [total, setTotal] = useState(0);
+  const [status, setStatus] = useState("chua thanh toan");
+  const [orderDate, setOrderDate] = useState("");
+  useEffect(() => {
+    // Lấy ngày tháng hiện tại và định dạng
+    const date = new Date();
+    const formattedDate = date.toISOString().split("T")[0]; // "YYYY-MM-DD"
+    setOrderDate(formattedDate);
+  }, []);
   const location = useLocation();
   const selectedProducts = location.state?.selectedProducts || [];
+  const selectOrder = selectedProducts.map((item) => {
+    const { id, ...rest } = item;
+    return rest;
+  });
   const productOrder = location.state?.productOrder || [];
+  useEffect(() => {
+    const calculateTotal = (items) => {
+      return items.reduce(
+        (sum, item) => sum + item.quantity * item.product.price,
+        0
+      );
+    };
+
+    const itemsToSum =
+      selectedProducts && selectedProducts.length > 0
+        ? selectedProducts
+        : productOrder;
+    setTotal(calculateTotal(itemsToSum));
+  }, []);
+
+  useEffect(() => {
+    const order =
+      selectedProducts && selectedProducts.length > 0
+        ? {
+            orderDate: orderDate,
+            total: total,
+            status: status,
+            orderDetails: selectOrder,
+            user: {
+              id: userId,
+            },
+          }
+        : {
+            orderDate: orderDate,
+            total: total,
+            status: status,
+            orderDetails: productOrder,
+            user: {
+              id: userId,
+            },
+          };
+    const postOrder = async () => {
+      if (total > 0) {
+        try {
+          const response = await axios.post(
+            "http://localhost:8080/order/create",
+            order
+          );
+          setOrderId(response.data.data.id);
+        } catch (error) {
+          console.error("Error fetching cart:", error);
+        }
+      }
+    };
+    postOrder();
+  }, [total]);
+  const payment = async (id) => {
+    if (id > 0) {
+      try {
+        const response = await axios.put(
+          `http://localhost:8080/order/update/${id}`
+        );
+        setOrderId(response.data.data.id);
+        window.alert("dat hang thanh cong");
+      } catch (error) {
+        console.error("Error fetching cart:", error);
+      }
+    }
+  };
+
   return (
     <div>
       <Header></Header>
@@ -72,20 +154,45 @@ const Order = () => {
                 />
               </div>
               <div className="div ms-3" style={{ paddingLeft: "50px" }}>
-                <p>{productOrder.product.name}</p>
+                <p>{productOrder[0].product.name}</p>
               </div>
               <div className="div ms-5" style={{ paddingLeft: "50px" }}>
-                <span> Size: {productOrder.size}</span>
+                <span> Size: {productOrder[0].size}</span>
               </div>
             </div>
-            <div className="div col-2">{productOrder.product.price}</div>
-            <div className="div col-1">{productOrder.quantity}</div>
+            <div className="div col-2">{productOrder[0].product.price}</div>
+            <div className="div col-1">{productOrder[0].quantity}</div>
             <div className="div col-2 ms-5">
-              {productOrder.quantity * productOrder.product.price}
+              {productOrder[0].quantity * productOrder[0].product.price}
             </div>
           </div>
         )}
-        <div className="div ms-3">thanh toan</div>
+        <div className="div mt-5" style={{ marginLeft: "900px" }}>
+          <div className="div">
+            <h4>Thông tin đơn hàng</h4>
+          </div>
+          <div className="info">
+            <div className="">
+              <h5>Tổng tiền: {total}</h5>
+            </div>
+            <div className="div">
+              <p>Phuơng thức vận chuyển: Nhanh</p>
+            </div>
+            <div className="div">
+              <p>Phuơng thức thanh toán: Thanh toán khi nhận hàng</p>
+            </div>
+
+            <div className="pay">
+              <button
+                type="button"
+                class="btn btn-danger"
+                onClick={() => payment(orderId)}
+              >
+                Đặt hàng
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -4,12 +4,6 @@ import { useState, useEffect } from "react";
 import Header from "../components/Header";
 import axios from "../config/config-axios";
 const Product = () => {
-  // const product = {
-  //   id: 1,
-  //   name: "nike",
-  //   price: 139.0,
-  //   url: "https://s.alicdn.com/@sc04/kf/Hedd90641e94a4ca4b5cf38f73886866eo.jpg_720x720q50.jpg",
-  // };
   const params = useParams();
   const productId = Number(params.id);
   const navigate = useNavigate();
@@ -67,11 +61,13 @@ const Product = () => {
   const handleCheckout = () => {
     navigate("/dat-hang", {
       state: {
-        productOrder: {
-          product,
-          size,
-          quantity,
-        },
+        productOrder: [
+          {
+            product,
+            size,
+            quantity,
+          },
+        ],
       },
     });
   };
