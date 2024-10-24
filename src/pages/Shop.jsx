@@ -3,54 +3,18 @@ import Header from "../components/Header";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Footer from "../components/Footer";
-const product = [
-  {
-    id: 1,
-    name: "nike",
-    price: 139.0,
-    url: "https://i.imgur.com/ppt0CRA.jpeg",
-  },
-  {
-    id: 2,
-    name: "adudas",
-    price: 1333,
-    url: "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTnY9al3paTHc8wY83_2BKgMwKWoWAaoQmVd82DhlQd-4JeOMfzdnCu0p81KeZcAR7rk6wTKagpee_HuhnQQlA3vZSxil4G3fHG0GPhAt47N7_T4WFZuIOJwXiebNx4uEuqD_W-9TN-a8E&usqp=CAc",
-  },
-
-  {
-    id: 3,
-    name: "bitis",
-    price: 1333,
-    url: "https://s.alicdn.com/@sc04/kf/H271ee78b2efc40768bf226256c958982k.jpg_720x720q50.jpg",
-  },
-  {
-    id: 4,
-    name: "convvert",
-    price: 1333,
-    url: "https://s.alicdn.com/@sc04/kf/Hb01ac410c1fb4a6aaf9bc6bc1f7e8dbdi.png_720x720q50.jpg",
-  },
-  {
-    id: 5,
-    name: "convvert",
-    price: 1333,
-    url: "https://s.alicdn.com/@sc04/kf/Hb01ac410c1fb4a6aaf9bc6bc1f7e8dbdi.png_720x720q50.jpg",
-  },
-  {
-    id: 6,
-    name: "convvert",
-    price: 1333,
-    url: "https://s.alicdn.com/@sc04/kf/Hb01ac410c1fb4a6aaf9bc6bc1f7e8dbdi.png_720x720q50.jpg",
-  },
-];
-const category = ["Chạy bộ", "Thể thao", "Thời trang"];
 const Shop = () => {
   const [totalPage, setTotalPage] = useState(0);
   const [page, setPage] = useState(1);
   const [products, setProducts] = useState([]);
+  const [searchCategory, setSearchCategory] = useState([]);
+  const [searchBranch, setSearchBranch] = useState([]);
+  const [category, setCategory] = useState([]);
+  const [branch, setBranch] = useState([]);
   useEffect(() => {
     axios
       .get(
-        `http://localhost:8080/product/get?filter=name~'a'&page=${page}&size=2`
+        `http://localhost:8080/product/get?filter=name~'nike'&page=${page}&size=12`
       )
       .then((response) => {
         setTotalPage(response.data.data.meta.pages);
@@ -58,8 +22,45 @@ const Shop = () => {
       });
   }, [page]);
 
+  useEffect(() => {
+    axios.get("http://localhost:8080/category/get").then((response) => {
+      setCategory(response.data.data);
+    });
+  }, []);
+  useEffect(() => {
+    axios.get("http://localhost:8080/branch/get").then((response) => {
+      setBranch(response.data.data);
+    });
+  }, []);
   const onChangePage = (page) => {
     setPage(page);
+  };
+
+  const handleCheckboxChange = (item) => {
+    const isSelected = searchCategory.some(
+      (selectedItem) => selectedItem.id === item.id
+    );
+
+    if (isSelected) {
+      setSearchCategory((prevSelected) =>
+        prevSelected.filter((selectedItem) => selectedItem.id !== item.id)
+      );
+    } else {
+      setSearchCategory((prevSelected) => [...prevSelected, item]);
+    }
+  };
+  const handleBranchChange = (item) => {
+    const isSelected = searchBranch.some(
+      (selectedItem) => selectedItem.id === item.id
+    );
+
+    if (isSelected) {
+      setSearchBranch((prevSelected) =>
+        prevSelected.filter((selectedItem) => selectedItem.id !== item.id)
+      );
+    } else {
+      setSearchBranch((prevSelected) => [...prevSelected, item]);
+    }
   };
   return (
     <div>
@@ -82,10 +83,14 @@ const Shop = () => {
                       className="form-check-input"
                       type="checkbox"
                       defaultValue=""
-                      id={item}
+                      id={item.name}
+                      onChange={() => handleCheckboxChange(item)}
+                      checked={searchCategory.some(
+                        (selectedItem) => selectedItem.id === item.id
+                      )}
                     />
-                    <label className="label ps-5" htmlFor={item}>
-                      {item}
+                    <label className="label ps-5" htmlFor={item.name}>
+                      {item.name}
                     </label>
                   </div>
                 ))}
@@ -94,17 +99,23 @@ const Shop = () => {
                 <div className="header mt-4">
                   <span>Theo thương hiệu</span>
                 </div>
-                <div className="form-check mt-3">
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    defaultValue=""
-                    id="flexCheckDefault"
-                  />
-                  <label className="label ps-5" htmlFor="flexCheckDefault">
-                    Thể thao
-                  </label>
-                </div>
+                {branch.map((item) => (
+                  <div className="form-check mt-3">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      defaultValue=""
+                      id={item.name}
+                      onChange={() => handleBranchChange(item)}
+                      checked={searchBranch.some(
+                        (selectedItem) => selectedItem.id === item.id
+                      )}
+                    />
+                    <label className="label ps-5" htmlFor={item.name}>
+                      {item.name}
+                    </label>
+                  </div>
+                ))}
               </div>
               <div className="price pt-4">
                 <div className="header mt-4">
@@ -113,12 +124,37 @@ const Shop = () => {
                 <div className="form-check mt-3">
                   <input
                     className="form-check-input"
-                    type="checkbox"
+                    type="radio"
                     defaultValue=""
-                    id="flexCheckDefault"
+                    id="1"
+                    name="price"
                   />
-                  <label className="label ps-5" htmlFor="flexCheckDefault">
-                    Thể thao
+                  <label className="label ps-5" htmlFor="1">
+                    Dưới 1 triệu
+                  </label>
+                </div>
+                <div className="form-check mt-3">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    defaultValue=""
+                    id="2"
+                    name="price"
+                  />
+                  <label className="label ps-5" htmlFor="2">
+                    Từ 1 triệu - 3 triệu
+                  </label>
+                </div>
+                <div className="form-check mt-3">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    defaultValue=""
+                    id="3"
+                    name="price"
+                  />
+                  <label className="label ps-5" htmlFor="3">
+                    Trên 3 triệu
                   </label>
                 </div>
               </div>
@@ -127,7 +163,7 @@ const Shop = () => {
           </div>
           <div className="product row col-9 bg-light ms-5">
             <div className="div row">
-              {product.map((item) => (
+              {products.map((item) => (
                 <div key={item.id} className="col-3">
                   <Link
                     to={`/product/${item.id}`}
@@ -135,7 +171,7 @@ const Shop = () => {
                   >
                     <div className="image mt-3">
                       <img
-                        src={item.url}
+                        src={item.image_url}
                         alt={item.name}
                         style={{
                           width: "250px",
@@ -147,20 +183,24 @@ const Shop = () => {
                       />
                     </div>
                     <div className="title pt-4">
-                      <p style={{ fontWeight: "bold", fontSize: "18px" }}>
-                        {item.name}
-                      </p>
-                      <span
-                        style={{
-                          fontWeight: "bold",
-                          fontFamily: "Arial, sans-serif",
-                          fontSize: "25px",
-                          fontStyle: "italic",
-                          color: "#FF5722",
-                        }}
-                      >
-                        {item.price} đ
-                      </span>
+                      <div className="div">
+                        <p style={{ fontWeight: "bold", fontSize: "18px" }}>
+                          {item.name}
+                        </p>
+                      </div>
+                      <div className="div mt-3">
+                        <span
+                          style={{
+                            fontWeight: "bold",
+                            fontFamily: "Arial, sans-serif",
+                            fontSize: "25px",
+                            fontStyle: "italic",
+                            color: "#FF5722",
+                          }}
+                        >
+                          {item.price} đ
+                        </span>
+                      </div>
                     </div>
                   </Link>
                   <div className="div">
