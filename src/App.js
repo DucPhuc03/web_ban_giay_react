@@ -7,6 +7,8 @@ import Product from "./pages/Product";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import { UserProvider } from "./utils/ContextUser";
+import History from "./pages/History";
+import Account from "./pages/Account";
 function App() {
   return (
     <div className="App">
@@ -20,6 +22,8 @@ function App() {
           <Route path="/dat-hang" element={<Order></Order>}></Route>
           <Route path="/gio-hang" element={<Cart></Cart>}></Route>
           <Route path="/product/:id" element={<Product></Product>}></Route>
+          <Route path="/lich-su" element={<History></History>}></Route>
+          <Route path="/tai-khoan" element={<Account></Account>}></Route>
         </Routes>
       </UserProvider>
     </div>

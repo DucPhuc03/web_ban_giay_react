@@ -18,7 +18,7 @@ const Product = () => {
       if (params) {
         try {
           const response = await axios.get(
-            `http://localhost:8080/product/get/3`
+            `http://localhost:8080/product/get/${productId}`
           );
           setProduct(response.data.data || []);
         } catch (error) {
@@ -79,12 +79,11 @@ const Product = () => {
           <div className="image col-4">
             <div className="div">
               <img
-                // src={product.image_url}
-                src="https://i.imgur.com/2CrH2oo.jpeg"
+                src={product.image_url}
                 alt=""
                 style={{
-                  width: "450px",
-                  height: "450px",
+                  width: "120%",
+                  height: "120%",
                   objectfit: "cover",
                   boxsizing: "border-box",
                   border: "10px solid white ",

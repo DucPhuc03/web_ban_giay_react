@@ -124,7 +124,7 @@ const Order = () => {
               <div className="div col-6 d-flex align-items-center ">
                 <div className="div mt-4">
                   <img
-                    src="https://s.alicdn.com/@sc04/kf/Hedd90641e94a4ca4b5cf38f73886866eo.jpg_720x720q50.jpg"
+                    src={item.product.image_url}
                     alt=""
                     style={{ width: "80px", height: "80px" }}
                   />

@@ -11,16 +11,38 @@ const Shop = () => {
   const [searchBranch, setSearchBranch] = useState([]);
   const [category, setCategory] = useState([]);
   const [branch, setBranch] = useState([]);
+  const priceMin = 100000; // Ví dụ giá tối thiểu
+  const priceMax = 10000000; // Ví dụ giá tối đa
   useEffect(() => {
-    axios
-      .get(
-        `http://localhost:8080/product/get?filter=name~'nike'&page=${page}&size=12`
-      )
-      .then((response) => {
-        setTotalPage(response.data.data.meta.pages);
-        setProducts(response.data.data.result);
-      });
-  }, [page]);
+    const branchFilter =
+      searchBranch.length > 0
+        ? `branch.name in [${searchBranch
+            .map((branch) => `'${branch.name}'`)
+            .join(",")}]`
+        : "";
+
+    // Chỉ thêm category filter nếu mảng không rỗng
+    const categoryFilter =
+      searchCategory.length > 0
+        ? `category.name in [${searchCategory
+            .map((category) => `'${category.name}'`)
+            .join(",")}]`
+        : "";
+
+    // Luôn có filter cho khoảng giá
+    const priceFilter = `price>${priceMin} and price<${priceMax}`;
+
+    // Kết hợp các filter, bỏ qua các điều kiện trống
+    const fullFilter = [branchFilter, categoryFilter, priceFilter]
+      .filter(Boolean)
+      .join(" and ");
+    const encodedFilter = encodeURIComponent(fullFilter);
+    const url = `http://localhost:8080/product/get?filter=${encodedFilter}&page=${page}&size=12`;
+    axios.get(url).then((response) => {
+      setTotalPage(response.data.data.meta.pages);
+      setProducts(response.data.data.result);
+    });
+  }, [page, searchBranch, searchCategory]);
 
   useEffect(() => {
     axios.get("http://localhost:8080/category/get").then((response) => {
@@ -62,6 +84,7 @@ const Shop = () => {
       setSearchBranch((prevSelected) => [...prevSelected, item]);
     }
   };
+  console.log(searchBranch);
   return (
     <div>
       <Header></Header>
@@ -184,7 +207,13 @@ const Shop = () => {
                     </div>
                     <div className="title pt-4">
                       <div className="div">
-                        <p style={{ fontWeight: "bold", fontSize: "18px" }}>
+                        <p
+                          style={{
+                            fontWeight: "bold",
+                            fontSize: "18px",
+                            height: "70px",
+                          }}
+                        >
                           {item.name}
                         </p>
                       </div>

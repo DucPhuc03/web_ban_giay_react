@@ -92,12 +92,12 @@ const Cart = () => {
                   <div className="div ms-4 d-flex align-items-center">
                     <div className="div mt-2 mb-2">
                       <img
-                        src="https://s.alicdn.com/@sc04/kf/Hedd90641e94a4ca4b5cf38f73886866eo.jpg_720x720q50.jpg"
+                        src={item.product.image_url}
                         alt=""
                         style={{ width: "120px", height: "120px" }}
                       />
                     </div>
-                    <div className="div ms-3" style={{ width: "120px" }}>
+                    <div className="div ms-3" style={{ width: "150px" }}>
                       <p>{item.product.name}</p>
                     </div>
                   </div>
