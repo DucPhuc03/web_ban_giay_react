@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Header from "../components/Header";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Footer from "../components/Footer";
+import { SearchContext } from "../utils/SearchContext";
 const Shop = () => {
+  const { searchTerm } = useContext(SearchContext);
   const [totalPage, setTotalPage] = useState(0);
   const [page, setPage] = useState(1);
   const [products, setProducts] = useState([]);
@@ -37,12 +39,12 @@ const Shop = () => {
       .filter(Boolean)
       .join(" and ");
     const encodedFilter = encodeURIComponent(fullFilter);
-    const url = `http://localhost:8080/product/get?filter=${encodedFilter}&page=${page}&size=12`;
+    const url = `http://localhost:8080/product/get?filter=name~'${searchTerm}'and ${encodedFilter}&page=${page}&size=12`;
     axios.get(url).then((response) => {
       setTotalPage(response.data.data.meta.pages);
       setProducts(response.data.data.result);
     });
-  }, [page, searchBranch, searchCategory]);
+  }, [page, searchBranch, searchCategory, searchTerm]);
 
   useEffect(() => {
     axios.get("http://localhost:8080/category/get").then((response) => {
@@ -84,7 +86,6 @@ const Shop = () => {
       setSearchBranch((prevSelected) => [...prevSelected, item]);
     }
   };
-  console.log(searchBranch);
   return (
     <div>
       <Header></Header>
@@ -178,6 +179,18 @@ const Shop = () => {
                   />
                   <label className="label ps-5" htmlFor="3">
                     Trên 3 triệu
+                  </label>
+                </div>
+                <div className="form-check mt-3">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    defaultValue=""
+                    id="4"
+                    name="price"
+                  />
+                  <label className="label ps-5" htmlFor="4">
+                    Tất cả
                   </label>
                 </div>
               </div>

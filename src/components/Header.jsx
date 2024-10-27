@@ -3,9 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import logo from "../assets/logo.png";
 import { UserContext } from "../utils/ContextUser";
+import { SearchContext } from "../utils/SearchContext";
 function Header() {
   const [isLogin, setIsLogin] = useState(false);
-
+  const { setSearchTerm } = useContext(SearchContext);
   const { user, number } = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -14,9 +15,13 @@ function Header() {
     setIsLogin(!!token);
   }, []);
   const handleLogout = () => {
+    localStorage.removeItem("user");
     Cookies.remove("access_token");
     setIsLogin(false);
     navigate("/dang-nhap");
+  };
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
   };
 
   return (
@@ -33,12 +38,6 @@ function Header() {
               Cửa hàng
             </Link>
           </li>
-
-          {/* <li className="nav-item">
-            <Link className="nav-link" to="lien-he">
-              Liên hệ
-            </Link>
-          </li> */}
           <li className="nav-item">
             <Link className="nav-link" to="/">
               <img
@@ -55,6 +54,7 @@ function Header() {
                 class="form-control"
                 placeholder="Search"
                 aria-label="Username"
+                onChange={handleSearchChange}
               ></input>
               <button className="rounded">
                 <i class="fa-solid fa-magnifying-glass"></i>

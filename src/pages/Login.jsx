@@ -24,7 +24,10 @@ const Login = () => {
 
       if (response.status === 200) {
         localStorage.setItem("user", JSON.stringify(response.data.data));
-        navigate("/");
+        const redirectPath = localStorage.getItem("redirectAfterLogin") || "/";
+        localStorage.removeItem("redirectAfterLogin");
+        navigate(redirectPath);
+
         window.location.reload();
       } else {
         window.alert("that bai");

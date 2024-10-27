@@ -3,16 +3,21 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Header from "../components/Header";
 import axios from "../config/config-axios";
+import Cookies from "js-cookie";
 const Product = () => {
   const params = useParams();
   const productId = Number(params.id);
   const navigate = useNavigate();
   const [size, setSize] = useState(27);
   const [product, setProduct] = useState({});
+  const [isLogin, setIsLogin] = useState(false);
+  useEffect(() => {
+    const token = Cookies.get("access_token");
+    setIsLogin(!!token);
+  }, []);
   const userId = localStorage.getItem("user")
     ? JSON.parse(localStorage.getItem("user")).id
     : null;
-  console.log(productId);
   useEffect(() => {
     const fetchProduct = async () => {
       if (params) {
@@ -55,21 +60,28 @@ const Product = () => {
       window.alert("thêm thành công");
       window.location.reload();
     } catch (error) {
-      console.error("Error posting cart:", error);
+      window.alert("Bạn chưa có tài khoản vui lòng đăng nhập ");
+      navigate("/dang-nhap");
     }
   };
   const handleCheckout = () => {
-    navigate("/dat-hang", {
-      state: {
-        productOrder: [
-          {
-            product,
-            size,
-            quantity,
-          },
-        ],
-      },
-    });
+    if (isLogin) {
+      navigate("/dat-hang", {
+        state: {
+          productOrder: [
+            {
+              product,
+              size,
+              quantity,
+            },
+          ],
+        },
+      });
+    } else {
+      window.alert("Vui lòng đăng nhập để mua hàng");
+      localStorage.setItem("redirectAfterLogin", `/product/${productId}`);
+      navigate("/dang-nhap");
+    }
   };
   return (
     <div>
