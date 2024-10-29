@@ -13,8 +13,8 @@ const Shop = () => {
   const [searchBranch, setSearchBranch] = useState([]);
   const [category, setCategory] = useState([]);
   const [branch, setBranch] = useState([]);
-  const priceMin = 100000; // Ví dụ giá tối thiểu
-  const priceMax = 10000000; // Ví dụ giá tối đa
+  const [priceMin, setPriceMin] = useState(100000);
+  const [priceMax, setPriceMax] = useState(10000000);
   useEffect(() => {
     const branchFilter =
       searchBranch.length > 0
@@ -44,7 +44,7 @@ const Shop = () => {
       setTotalPage(response.data.data.meta.pages);
       setProducts(response.data.data.result);
     });
-  }, [page, searchBranch, searchCategory, searchTerm]);
+  }, [page, searchBranch, searchCategory, searchTerm, priceMin, priceMax]);
 
   useEffect(() => {
     axios.get("http://localhost:8080/category/get").then((response) => {
@@ -60,6 +60,7 @@ const Shop = () => {
     setPage(page);
   };
 
+  // ham xu li checkbox category
   const handleCheckboxChange = (item) => {
     const isSelected = searchCategory.some(
       (selectedItem) => selectedItem.id === item.id
@@ -73,6 +74,8 @@ const Shop = () => {
       setSearchCategory((prevSelected) => [...prevSelected, item]);
     }
   };
+
+  // ham xu li checkbox branch
   const handleBranchChange = (item) => {
     const isSelected = searchBranch.some(
       (selectedItem) => selectedItem.id === item.id
@@ -85,6 +88,11 @@ const Shop = () => {
     } else {
       setSearchBranch((prevSelected) => [...prevSelected, item]);
     }
+  };
+
+  const changePrice = (min, max) => {
+    setPriceMin(min);
+    setPriceMax(max);
   };
   return (
     <div>
@@ -152,9 +160,10 @@ const Shop = () => {
                     defaultValue=""
                     id="1"
                     name="price"
+                    onChange={() => changePrice(1000000, 3000000)}
                   />
                   <label className="label ps-5" htmlFor="1">
-                    Dưới 1 triệu
+                    Dưới 3 triệu
                   </label>
                 </div>
                 <div className="form-check mt-3">
@@ -164,9 +173,10 @@ const Shop = () => {
                     defaultValue=""
                     id="2"
                     name="price"
+                    onChange={() => changePrice(3000000, 5000000)}
                   />
                   <label className="label ps-5" htmlFor="2">
-                    Từ 1 triệu - 3 triệu
+                    Từ 3 triệu - 5 triệu
                   </label>
                 </div>
                 <div className="form-check mt-3">
@@ -176,9 +186,10 @@ const Shop = () => {
                     defaultValue=""
                     id="3"
                     name="price"
+                    onChange={() => changePrice(5000000, 10000000)}
                   />
                   <label className="label ps-5" htmlFor="3">
-                    Trên 3 triệu
+                    Trên 5 triệu
                   </label>
                 </div>
                 <div className="form-check mt-3">
@@ -188,6 +199,7 @@ const Shop = () => {
                     defaultValue=""
                     id="4"
                     name="price"
+                    onChange={() => changePrice(1000000, 10000000)}
                   />
                   <label className="label ps-5" htmlFor="4">
                     Tất cả
@@ -240,7 +252,7 @@ const Shop = () => {
                             color: "#FF5722",
                           }}
                         >
-                          {item.price} đ
+                          <span>{item.price.toLocaleString("vi-VN")} đ</span>
                         </span>
                       </div>
                     </div>

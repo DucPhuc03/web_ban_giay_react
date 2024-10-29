@@ -56,15 +56,18 @@ function Header() {
                 aria-label="Username"
                 onChange={handleSearchChange}
               ></input>
-              <button className="rounded">
+              <button className="rounded border-0">
                 <i class="fa-solid fa-magnifying-glass"></i>
               </button>
             </form>
           </li>
           <li>
             <Link className="" to={"/gio-hang"}>
-              <button className="rounded" style={{ position: "relative" }}>
-                <i class="fa-solid fa-cart-shopping"></i>
+              <button
+                className="rounded border-0 bg-transparent"
+                style={{ position: "relative" }}
+              >
+                <i class="fa-solid fa-cart-shopping fa-lg"></i>
                 <span
                   style={{
                     position: "absolute",
@@ -96,7 +99,7 @@ function Header() {
               aria-expanded="false"
               style={{ border: "none", background: "none" }}
             >
-              <i className="fa-solid fa-user"></i>
+              <i className="fa-solid fa-user fa-lg"></i>
             </button>
             <ul
               className="dropdown-menu"

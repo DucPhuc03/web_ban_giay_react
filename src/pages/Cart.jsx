@@ -52,6 +52,19 @@ const Cart = () => {
       setProduct(updatedProducts);
     }
   };
+  // Xóa sản phẩm trong giỏ hàng
+  const deleteCart = async (id) => {
+    const confirmDelete = window.confirm("Bạn có chắc chắn muốn xóa");
+    if (confirmDelete) {
+      try {
+        await axios.delete(`http://localhost:8080/cart/delete/${id}`);
+        window.location.reload();
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
   // Chuyển đến trang thanh toán với các sản phẩm đã chọn
   const handleCheckout = () => {
     navigate("/dat-hang", { state: { selectedProducts } });
@@ -62,12 +75,12 @@ const Cart = () => {
       <div className="container mt-3">
         <div
           className="row ms-5 d-flex justify-content-center align-items-center bg-light"
-          style={{ width: "100%", height: "50px" }}
+          style={{ height: "50px" }}
         >
-          <div className="div col-5">Sản phẩm</div>
+          <div className="div col-5 ps-5">Sản phẩm</div>
           <div className="div col-2">Giá</div>
           <div className="div col-2">Số lượng</div>
-          <div className="div col-1">Tổng</div>
+          <div className="div col-2">Tổng</div>
           <div className="div col-1">Thao tác</div>
         </div>
 
@@ -104,7 +117,9 @@ const Cart = () => {
                 </div>
                 <div className="div col-2">Size: {item.size}</div>
               </div>
-              <div className="div col-2">{item.product.price} đ</div>
+              <div className="div col-2">
+                {item.product.price.toLocaleString("vi-VN")} đ
+              </div>
               <div className="div col-2">
                 <div className="div ms-2 d-flex">
                   <button
@@ -141,25 +156,32 @@ const Cart = () => {
                   </button>
                 </div>
               </div>
-              <div className="div col-1">
-                {item.product.price * item.quantity} đ
+              <div className="div col-2">
+                {(item.product.price * item.quantity).toLocaleString("vi-VN")} đ
               </div>
               <div className="div col-1">
-                <button>
-                  <i className="fa-solid fa-trash-can"></i>
+                <button
+                  className="border-0 bg-transparent ms-1"
+                  onClick={() => deleteCart(item.id)}
+                >
+                  <i className="fa-solid fa-trash-can fa-lg"></i>
                 </button>
               </div>
             </div>
           ))
         ) : (
-          <p>Giỏ hàng trống</p>
+          <p className="mt-4" style={{ marginLeft: "600px", fontSize: "24px" }}>
+            Giỏ hàng trống
+          </p>
         )}
 
         {/* Nút chuyển đến trang thanh toán */}
         <button
-          className="btn btn-primary mt-3"
+          className="btn btn-primary mt-5"
           onClick={handleCheckout}
           disabled={selectedProducts.length === 0}
+          hidden={product.length === 0}
+          style={{ marginLeft: "600px" }}
         >
           Thanh toán
         </button>

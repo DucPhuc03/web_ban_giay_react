@@ -1,8 +1,31 @@
 import React, { useState } from "react";
 import Header from "../components/Header";
-
+import axios from "../config/config-axios";
 const Account = () => {
-  const [username, setUsername] = useState("");
+  const user = localStorage.getItem("user")
+    ? JSON.parse(localStorage.getItem("user"))
+    : null;
+  const [username, setUsername] = useState(user.username);
+  const [address, setAddress] = useState(user.address);
+  const [phone, setPhone] = useState(user.phone);
+
+  const userUpdate = {
+    id: user.id,
+    username: username,
+    phone: phone,
+    address: address,
+  };
+  const updateUser = () => {
+    try {
+      const respone = axios.put(
+        "http://localhost:8080/user/update",
+        userUpdate
+      );
+      window.alert("Đã lưu thành công");
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div>
       <Header></Header>
@@ -25,6 +48,7 @@ const Account = () => {
           <input
             className="form-control"
             type="text"
+            value={username}
             onChange={(e) => setUsername(e.target.value)}
             style={{ width: "150px" }}
           />
@@ -37,7 +61,7 @@ const Account = () => {
           >
             Email
           </label>
-          <span>nguyenpguc200</span>
+          <span>{user.email}</span>
         </div>
         <div className="border-red mt-5 d-flex">
           <label
@@ -50,7 +74,8 @@ const Account = () => {
           <input
             className="form-control"
             type="text"
-            onChange={(e) => setUsername(e.target.value)}
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
             style={{ width: "150px" }}
           />
         </div>
@@ -65,12 +90,17 @@ const Account = () => {
           <input
             className="form-control"
             type="text"
-            onChange={(e) => setUsername(e.target.value)}
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
             style={{ width: "500px" }}
           />
         </div>
         <div className="mt-3">
-          <button type="button" class="btn btn-danger">
+          <button
+            type="button"
+            class="btn btn-danger"
+            onClick={() => updateUser()}
+          >
             Lưu
           </button>
         </div>

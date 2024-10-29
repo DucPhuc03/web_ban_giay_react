@@ -8,16 +8,17 @@ const Product = () => {
   const params = useParams();
   const productId = Number(params.id);
   const navigate = useNavigate();
-  const [size, setSize] = useState(27);
+  const [size, setSize] = useState();
   const [product, setProduct] = useState({});
   const [isLogin, setIsLogin] = useState(false);
   useEffect(() => {
     const token = Cookies.get("access_token");
     setIsLogin(!!token);
   }, []);
-  const userId = localStorage.getItem("user")
-    ? JSON.parse(localStorage.getItem("user")).id
+  const user = localStorage.getItem("user")
+    ? JSON.parse(localStorage.getItem("user"))
     : null;
+  const userId = user ? user.id : null;
   useEffect(() => {
     const fetchProduct = async () => {
       if (params) {
@@ -51,7 +52,7 @@ const Product = () => {
       product: { id: productId },
       user: { id: userId },
     };
-    console.log(productCurrent);
+
     try {
       const response = await axios.post(
         "http://localhost:8080/cart/create",
@@ -137,7 +138,7 @@ const Product = () => {
                   color: "#FF5722",
                 }}
               >
-                {product.price * quantity} đ
+                {(product.price * quantity).toLocaleString("vi-VN")} đ
               </span>
             </div>
             <div className="deliver d-flex">
@@ -154,10 +155,7 @@ const Product = () => {
                 <span>Vận chuyển đến</span>
               </div>
               <div className="div">
-                <span>
-                  Số 18, Ngõ 99 Đường Trung Kính Phường Trung Hòa, Quận Cầu
-                  Giấy, Hà Nội
-                </span>
+                <span>{user ? user.address : "Hà Nội"}</span>
               </div>
             </div>
             <div className="size d-flex mt-5">
@@ -165,36 +163,17 @@ const Product = () => {
                 <span>Size</span>
               </div>
               <div className="div row ms-5">
-                <button
-                  className="btn btn-secondary col-2 me-2"
-                  onClick={() => changeSize(27)}
-                >
-                  27
-                </button>
-                <button
-                  className="btn btn-secondary col-2 me-2"
-                  onClick={() => changeSize(28)}
-                >
-                  28
-                </button>
-                <button
-                  className="btn btn-secondary col-2 me-2"
-                  onClick={() => changeSize(29)}
-                >
-                  29
-                </button>
-                <button
-                  className="btn btn-secondary col-2 me-2"
-                  onClick={() => changeSize(30)}
-                >
-                  30
-                </button>
-                <button
-                  className="btn btn-secondary col-2 me-2"
-                  onClick={() => changeSize(31)}
-                >
-                  31
-                </button>
+                {[27, 28, 29, 30, 31].map((selectedSize) => (
+                  <button
+                    key={selectedSize}
+                    className={`btn col-2 me-2 ${
+                      size === selectedSize ? "btn-primary" : "btn-secondary"
+                    }`}
+                    onClick={() => changeSize(selectedSize)}
+                  >
+                    {selectedSize}
+                  </button>
+                ))}
               </div>
             </div>
             <div className="quantity d-flex mt-5">
