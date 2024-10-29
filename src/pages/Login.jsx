@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import logo from "../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import Footer from "../components/Footer";
 const Login = () => {
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
@@ -98,6 +99,7 @@ const Login = () => {
           </div>
         </div>
       </div>
+      <Footer></Footer>
     </div>
   );
 };

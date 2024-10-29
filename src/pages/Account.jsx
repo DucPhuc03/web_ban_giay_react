@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Header from "../components/Header";
 import axios from "../config/config-axios";
+import Footer from "../components/Footer";
 const Account = () => {
   const user = localStorage.getItem("user")
     ? JSON.parse(localStorage.getItem("user"))
@@ -15,12 +16,13 @@ const Account = () => {
     phone: phone,
     address: address,
   };
-  const updateUser = () => {
+  const updateUser = async () => {
     try {
-      const respone = axios.put(
+      const response = await axios.put(
         "http://localhost:8080/user/update",
         userUpdate
       );
+      localStorage.setItem("user", JSON.stringify(response.data.data));
       window.alert("Đã lưu thành công");
     } catch (error) {
       console.log(error);
@@ -105,6 +107,7 @@ const Account = () => {
           </button>
         </div>
       </div>
+      <Footer></Footer>
     </div>
   );
 };

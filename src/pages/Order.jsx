@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Header from "../components/Header";
 import axios from "../config/config-axios";
+import Footer from "../components/Footer";
 const Order = () => {
   const userId = localStorage.getItem("user")
     ? JSON.parse(localStorage.getItem("user")).id
@@ -194,6 +195,7 @@ const Order = () => {
           </div>
         </div>
       </div>
+      <Footer></Footer>
     </div>
   );
 };

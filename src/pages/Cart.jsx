@@ -3,6 +3,7 @@ import Header from "../components/Header";
 import axios from "../config/config-axios";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../utils/ContextUser";
+import Footer from "../components/Footer";
 const Cart = () => {
   const { user } = useContext(UserContext);
   const [product, setProduct] = useState([]);
@@ -186,6 +187,7 @@ const Cart = () => {
           Thanh toán
         </button>
       </div>
+      <Footer></Footer>
     </div>
   );
 };

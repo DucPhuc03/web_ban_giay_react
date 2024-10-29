@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import logo from "../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import Footer from "../components/Footer";
 const Register = () => {
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
@@ -21,8 +22,10 @@ const Register = () => {
         user
       );
       if (response.status === 200) {
-        window.alert("thanh cong");
+        window.alert("Đăng kí thành công");
         navigate("/dang-nhap");
+
+        axios.post("http://localhost:8080/email/register", response.data.data);
       } else {
         window.alert("that bai");
       }
@@ -30,6 +33,7 @@ const Register = () => {
       window.alert("that bai");
     }
   };
+
   return (
     <div>
       <div className="container">
@@ -106,6 +110,7 @@ const Register = () => {
           </div>
         </div>
       </div>
+      <Footer></Footer>
     </div>
   );
 };

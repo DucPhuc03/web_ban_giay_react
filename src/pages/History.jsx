@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Header from "../components/Header";
 import axios from "../config/config-axios";
+import Footer from "../components/Footer";
 const History = () => {
   const [order, setOrder] = useState([]);
   const [status, setStatus] = useState("");
@@ -123,6 +124,7 @@ const History = () => {
           ))}
         </div>
       </div>
+      <Footer></Footer>
     </div>
   );
 };

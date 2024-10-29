@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Header from "../components/Header";
 import axios from "../config/config-axios";
 import Cookies from "js-cookie";
+import Footer from "../components/Footer";
 const Product = () => {
   const params = useParams();
   const productId = Number(params.id);
@@ -242,12 +243,23 @@ const Product = () => {
                 <h4>Mô tả sản phẩm</h4>
               </div>
               <div className="div">
-                <p>{product.description}</p>
+                <p>SHOP ĐẢM BẢO và CAM KẾT CHO CÁC BẠN</p>
+                <p>
+                  🍓 Về sản phẩm: Shop cam kết cả về chất lượng và kiểu dáng.
+                  Tất cả ảnh đều không chỉnh sửa. 99% là sản phẩm đúng như ảnh
+                  1% là do khách hàng quá đẹp trai, hihi.
+                </p>
+                <p>🍓 Dịch vụ: Hỗ trợ đổi hàng nếu các bạn đi không vừa.</p>
+                <p>
+                  🍓 Thời gian chuẩn bị hàng: hàng luôn có sẵn nên cứ đặt là sẽ
+                  đóng gói gửi bạn ạ
+                </p>
               </div>
             </div>
           </div>
         </div>
       </div>
+      <Footer></Footer>
     </div>
   );
 };
