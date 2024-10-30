@@ -13,7 +13,7 @@ const History = () => {
       if (userId) {
         try {
           const response = await axios.get(
-            `http://localhost:8080/order/get?filter=user.id:${userId} and status~'${status}'`
+            `http://localhost:8080/order/get?filter=user.id:${userId} and status~'${status}'&sort=orderDate,desc`
           );
           setOrder(response.data.data || []);
         } catch (error) {
@@ -117,7 +117,15 @@ const History = () => {
                 </div>
               ))}
 
-              <div className="div mt-5  " style={{ height: "50px" }}>
+              <div
+                className="div mt-5  "
+                style={{
+                  height: "50px",
+                  fontSize: "24px",
+                  fontWeight: "bold",
+                  color: "#FF5722",
+                }}
+              >
                 <span>Thành tiền: {item.total.toLocaleString("vi-VN")} đ</span>
               </div>
             </div>

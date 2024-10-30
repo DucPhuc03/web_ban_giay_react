@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import axios from "../config/config-axios";
 import Footer from "../components/Footer";
 const Order = () => {
-  const userId = localStorage.getItem("user")
-    ? JSON.parse(localStorage.getItem("user")).id
+  const navigate = useNavigate();
+  let order;
+  const user = localStorage.getItem("user")
+    ? JSON.parse(localStorage.getItem("user"))
     : null;
+  const userId = user ? user.id : null;
   const [orderId, setOrderId] = useState();
   const [total, setTotal] = useState(0);
   const [status, setStatus] = useState("chua thanh toan");
@@ -40,7 +43,7 @@ const Order = () => {
   }, []);
 
   useEffect(() => {
-    const order =
+    order =
       selectedProducts && selectedProducts.length > 0
         ? {
             orderDate: orderDate,
@@ -83,6 +86,11 @@ const Order = () => {
         );
         setOrderId(response.data.data.id);
         window.alert("dat hang thanh cong");
+        navigate("/");
+        axios.post("http://localhost:8080/email/order", {
+          userId: userId,
+          orderId: orderId,
+        });
       } catch (error) {
         console.error("Error fetching cart:", error);
       }
@@ -106,10 +114,7 @@ const Order = () => {
               <span>Địa chỉ nhận hàng</span>
             </div>
             <div className="div mt-3">
-              <p style={{ fontSize: "18px" }}>
-                Nguyễn Đức Phức (+84) 977684493 Số 18, Ngõ 99 Đường Trung Kính,
-                Phường Trung Hòa, Quận Cầu Giấy, Hà Nội
-              </p>
+              <p style={{ fontSize: "18px" }}>{user.address}</p>
             </div>
           </div>
         </div>
@@ -130,14 +135,23 @@ const Order = () => {
                     style={{ width: "80px", height: "80px" }}
                   />
                 </div>
-                <div className="div ms-3" style={{ paddingLeft: "50px" }}>
+                <div
+                  className="div ms-3"
+                  style={{
+                    paddingLeft: "50px",
+                    width: "300px",
+                    fontWeight: "bold",
+                  }}
+                >
                   <p>{item.product.name}</p>
                 </div>
                 <div className="div ms-5" style={{ paddingLeft: "50px" }}>
                   <span> Size: {item.size}</span>
                 </div>
               </div>
-              <div className="div col-2">{item.product.price}</div>
+              <div className="div col-2">
+                {item.product.price.toLocaleString("vi-VN")} đ
+              </div>
               <div className="div col-1">{item.quantity}</div>
               <div className="div col-2 ms-5">
                 {item.quantity * item.product.price}
@@ -149,9 +163,9 @@ const Order = () => {
             <div className="div col-6 d-flex align-items-center ">
               <div className="div mt-4">
                 <img
-                  src="https://s.alicdn.com/@sc04/kf/Hedd90641e94a4ca4b5cf38f73886866eo.jpg_720x720q50.jpg"
+                  src={productOrder[0].product.image_url}
                   alt=""
-                  style={{ width: "80px", height: "80px" }}
+                  style={{ width: "100px", height: "100px" }}
                 />
               </div>
               <div className="div ms-3" style={{ paddingLeft: "50px" }}>
@@ -161,10 +175,15 @@ const Order = () => {
                 <span> Size: {productOrder[0].size}</span>
               </div>
             </div>
-            <div className="div col-2">{productOrder[0].product.price}</div>
+            <div className="div col-2">
+              {productOrder[0].product.price.toLocaleString("vi-VN")} đ
+            </div>
             <div className="div col-1">{productOrder[0].quantity}</div>
             <div className="div col-2 ms-5">
-              {productOrder[0].quantity * productOrder[0].product.price}
+              {(
+                productOrder[0].quantity * productOrder[0].product.price
+              ).toLocaleString("vi-VN")}{" "}
+              đ
             </div>
           </div>
         )}
@@ -174,7 +193,7 @@ const Order = () => {
           </div>
           <div className="info">
             <div className="">
-              <h5>Tổng tiền: {total}</h5>
+              <h5>Tổng tiền: {total.toLocaleString("vi-VN")} đ</h5>
             </div>
             <div className="div">
               <p>Phuơng thức vận chuyển: Nhanh</p>

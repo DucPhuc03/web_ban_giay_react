@@ -9,7 +9,7 @@ const Product = () => {
   const params = useParams();
   const productId = Number(params.id);
   const navigate = useNavigate();
-  const [size, setSize] = useState();
+  const [size, setSize] = useState(27);
   const [product, setProduct] = useState({});
   const [isLogin, setIsLogin] = useState(false);
   useEffect(() => {
@@ -106,7 +106,9 @@ const Product = () => {
             </div>
           </div>
           <div className="info col-6 ms-5">
-            <p style={{ fontWeight: "bold" }}>{product.name}</p>
+            <p style={{ fontWeight: "bold", fontSize: "25px" }}>
+              {product.name}
+            </p>
             <div className="div d-flex">
               <div className="div  d-flex me-3">
                 <div className="div">
